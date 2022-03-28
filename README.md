@@ -38,7 +38,7 @@ Akamai and the team I work for can address custom requirements and also provide 
 Show inline documentation:
 
 ```
-perl ./NS-hlsdownloader-VOD.pl -h
+perl ./NS-hlsdownloader-LIVE.pl -h
 ```
 
 All options:
@@ -60,7 +60,7 @@ Usage:
       --help,-h      Print this help
 
   Example:
-        perl NS-hlsdownloader-VOD.pl \
+        perl NS-hlsdownloader-LIVE.pl \
             -url="https://myHostname-lh.akamaihd.net/i/myPath/myFilename_angle@streamID/master.m3u8" \
             -nsHost="myAccount.upload.akamai.com" \
             -nsPath="myRootNSdirectory" \
@@ -125,7 +125,6 @@ Usage:
 Some corner cases are currently in development:
 
 - [ ] Generate a batch script to remove source files when the process is over so you could clean up source files on the source NetStorage to reduce the costs.  
-- [ ] Helper to retrieve all hostnames valid candidates for migration, list all SPOD configurations and hostnames for a customer using APIs.
 - [ ] Migrate Akamai hostnames into AMD config and implement logic to reuse legacy urls on AMD.
 
 Then we will automate the migration and also allow migration of additional assets referenced in the master or child playlists.
