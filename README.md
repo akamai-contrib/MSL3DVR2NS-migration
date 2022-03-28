@@ -1,12 +1,12 @@
-# SPOD2NS-migration
-Migration tool for Akamai Stream Packaging to NetStorage (->Static Packaging)
+# MSL3DVR2NS-migration
+Migration tool for Akamai Media Services Live 3 Stream Packaging (DVR) to NetStorage (->Static Packaging)
 
 ## Overview
-This tool will help you migrate your content delivered today from Akamai Stream Packaging OnDemand (SPOD) or also named Media Services OnDemand Stream Packaging (MSOD+SP) to your prefered Netstorage (Akamai Storage) group.  
-As SPOD is part of an End Of Life program, you have few months left to migrate your VOD library.  
+This tool will help you migrate your content delivered today from Akamai Media Services Live 3 Stream Packaging (DVR) Stream Packaging to your prefered Netstorage (Akamai Storage) group.  
+As MSL3+SP is part of an End Of Life program, you have few months left to migrate your LIVE DVR library.  
 The current workflow is quite simple, it leverages Netstorage as the downloader:  
 
-* The input is an Akamai Stream Packaging Video OnDemand stream url (legacy SPOD)  
+* The input is an Akamai Stream Packaging MSL3+DVR stream url (legacy MSL3+DVR)  
 * We inspect the manifests (master and child). 
 * We modify the urls as relative  
 * We send commands to the destination NetStorage to download all the segments, so that we do not have to download locally and upload again (less bandwidth consumption then).  
@@ -14,10 +14,10 @@ The current workflow is quite simple, it leverages Netstorage as the downloader:
 ## Requirements
 
 * Perl script to be run from a terminal (Linux/Mac...) on a server/laptop
-* Akamai Stream Packaging OnDemand (SPOD/MSOD+SP) stream url as HLS matching:  
+* Akamai MSL3 Stream Packaging LIVE (MSL3+SP+DVR) stream url as HLS matching:  
 
 ```
-https://myHostname-vh.akamaihd.net/i/myPath/myFilename_bitrate,bitrate2,bitrate3,.mp4.csmil/master.m3u8
+https://myHostname-lh.akamaihd.net/i/myPath/myFilename_angle@streamID/master.m3u8
 ```
 
 * A Netstorage configuration on Akamai platform, that will be used as the destination
@@ -44,10 +44,10 @@ perl ./NS-hlsdownloader-VOD.pl -h
 All options:
 
 ```
-perl ./NS-hlsdownloader-VOD.pl -url=streamUrl -nsHost=NetStorage_Hostname -nsPath=NetStorage_Destination_Directory -nsKey=NetStorage_SSH_Public_Key [-tokenKey=key] [-log] [-debug]
+perl ./NS-hlsdownloader-LIVE.pl -url=streamUrl -nsHost=NetStorage_Hostname -nsPath=NetStorage_Destination_Directory -nsKey=NetStorage_SSH_Public_Key [-tokenKey=key] [-log] [-debug]
 
 Usage:
-    perl NS-hlsdownloader-VOD.pl -url=streamUrl -nsHost=NetStorage_Hostname
+    perl NS-hlsdownloader-LIVE.pl -url=streamUrl -nsHost=NetStorage_Hostname
     -nsPath=NetStorage_Destination_Directory
     -nsKey=NetStorage_SSH_Public_Key [-tokenKey=key] [-log] [-debug]
 
@@ -61,7 +61,7 @@ Usage:
 
   Example:
         perl NS-hlsdownloader-VOD.pl \
-            -url="https://yourAkamaiSPODhostname-vh.akamaihd.net/i/path/filename_,bitrate1,bitrate2,...,.mp4.csmil/master.m3u8" \
+            -url="https://myHostname-lh.akamaihd.net/i/myPath/myFilename_angle@streamID/master.m3u8" \
             -nsHost="myAccount.upload.akamai.com" \
             -nsPath="myRootNSdirectory" \
             -nsKey="/Users/myUser/.ssh/netstorage/myPublicNetStorageKey.pub" \
@@ -124,11 +124,9 @@ Usage:
 
 Some corner cases are currently in development:
 
-- [ ] Support custom implementations on top of Akamai SPOD delivery.   
-- [ ] Support advanced features, WebVTT beta.  
-- [ ] Helper to retrieve Stream urls from a single NetStorage group by exploring directories and files, rebuilding the stream url from discovered assets, mp4 by bitrate.  
 - [ ] Generate a batch script to remove source files when the process is over so you could clean up source files on the source NetStorage to reduce the costs.  
 - [ ] Helper to retrieve all hostnames valid candidates for migration, list all SPOD configurations and hostnames for a customer using APIs.
+- [ ] Migrate Akamai hostnames into AMD config and implement logic to reuse legacy urls on AMD.
 
 Then we will automate the migration and also allow migration of additional assets referenced in the master or child playlists.
 
